@@ -1,0 +1,28 @@
+{
+  "stepOne": [
+    {
+      "Summ": "5000",
+      "Term": "12",
+      "id": 1
+    }
+  ],
+  "stepTwo": [
+    {
+      "INN": "3131121243",
+      "Name": "Ivan",
+      "Surname": "Petrov",
+      "City": "San Francisco, CA, United States",
+      "id": 1
+    }
+  ],
+  "stepThree": [
+    {
+      "Summ": "5000",
+      "Term": "12",
+      "INN": "3131121243",
+      "Surname": "Petrov",
+      "City": "San Francisco, CA, United States",
+      "id": 1
+    }
+  ]
+}
