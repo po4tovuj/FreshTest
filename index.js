@@ -1,5 +1,4 @@
 
-
 /* render page, here could be entered data from json by using variables from:
 fetch(url)
 fetch(stepThreeUrl, add)
@@ -57,7 +56,6 @@ function select(name) {
 
 let errorMessage = select('.errorMessage');
 let clientInfo = {};
-let btnConf = select('#confirm');
 let url = "http://localhost:3000/";
 let city = select('.get-city');
 let currentId = '';
@@ -71,6 +69,44 @@ let currentStep = '';
     let inn = select('#inn');
 
 //check valid summ
+function statusBar () {
+    let status = select('.status');
+    function textStatus (text) {
+        return setTimeout(() => {
+            status.innerHTML = `<span class="status status__text">${text}</span>`;
+        }, 1500);
+    }
+    switch (Object.keys(clientInfo).length) {
+        case 1:
+            status.style.width = `100px`;
+            textStatus('You fill 10%');
+            break;
+        case 2:
+            status.style.width = `200px`;
+            textStatus('You are finish stepOne');
+            break;
+        case 3:
+            status.style.width = `300px`;
+            textStatus('You are finished 50%');
+            break;
+        case 4:
+            status.style.width = `400px`;
+            textStatus('You are finished 50% of stepTwo');
+            break;
+        case 5: 
+            status.style.width = `500px`;
+            textStatus('You are  almost finish');
+            break;
+        case 6:
+            status.style.width = `600px`;
+            textStatus('Chek your information a confirm it');
+            break;
+        default:
+            status.style.width = '';
+            textStatus('');
+            return;
+    }
+}
 
     function checkSumm() {
         if (summ.value === '' || summ.value > 10000 || summ.value <= 0) {
@@ -93,6 +129,7 @@ let currentStep = '';
             term.removeAttribute('disabled');
             errorMessage.textContent = '';
             clientInfo.summ = summ.value;
+            statusBar();
             console.log(clientInfo);
         }
         return checkStepOne(); /* here will be check firstStep if client try to comeback from next input  */
@@ -109,6 +146,7 @@ let currentStep = '';
             errorMessage.textContent = 'Вы не корректно заполнили поле Term. Введите целое число от 1 до 12';
         } else {
             clientInfo.term = term.value;
+            statusBar();
             errorMessage.textContent = '';
         }
         return checkStepOne();
@@ -127,7 +165,7 @@ let currentStep = '';
             add.method = "POST";
             add.body = JSON.stringify({
                 "Summ": summ.value,
-                "Term": term.value,
+                "Term": term.value
             });
             fetch(stepOneUrl, add)
                 .then(response => {
@@ -159,7 +197,7 @@ let currentStep = '';
     let delAttr = (name) => {
         name.forEach(elem => {
             elem.removeAttribute('disabled');
-        });
+        })
     };
 
 //check correct INN and check age>=21 to continuation
@@ -199,10 +237,12 @@ let currentStep = '';
                 .catch(err => {
                     console.error("Error: ", err);
                 });
+
             errorMessage.textContent = 'Sorry, but your age is less then 21. You couldn\'t take a credit';
             setAttr(stepTwoErr);
         } else {
             clientInfo.inn = inn.value;
+            statusBar();
             console.log(age);
             delAttr(stepTwoErr);
         }
@@ -222,6 +262,7 @@ let currentStep = '';
             name.value = name.value[0].toUpperCase() + name.value.substr(1);
             errorMessage.textContent = '';
             clientInfo.name = name.value;
+            statusBar();
         }
     }
 //check valid Surname
@@ -238,6 +279,7 @@ let currentStep = '';
             errorMessage.textContent = '';
             surname.value = surname.value[0].toUpperCase() + surname.value.substr(1);
             clientInfo.surname = surname.value;
+            statusBar();
         }
     }
     //check city and write data in Json in StepTwo
@@ -247,6 +289,7 @@ let currentStep = '';
             errorMessage.textContent = 'Please enter your city';
         } else {
             clientInfo.city = city.value;
+            statusBar();
             let add = {};
             let stepTwoUrl = `${url}stepTwo`;
             add.headers = {
@@ -299,14 +342,14 @@ btnNext.addEventListener('click', function () {
             console.log(`${key}: ${clientInfo[key]}`);
         }
 
-        let render = `<table class="list">
+        let renderList = `<table class="list">
         <caption> Please confirm your infirmation</caption>
         <tr class="first-row"> ${renderKey}</tr>
            <tr> ${renderVal}</tr>
         </table>`;
         // btnConf.style.visibility = "visible";
         let container = select('.container');
-        container.insertAdjacentHTML('beforeEnd', render);
+        container.insertAdjacentHTML('beforeEnd', renderList);
     } else if (Object.keys(clientInfo).length == 6 && change){ 
         change = false; /* if client saw list and all inputs filled it write stepThree in Json*/
         btnNext.value = 'Get List';

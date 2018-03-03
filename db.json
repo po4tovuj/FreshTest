@@ -4,6 +4,11 @@
       "Summ": "5000",
       "Term": "12",
       "id": 1
+    },
+    {
+      "Summ": "123",
+      "Term": "12",
+      "id": 2
     }
   ],
   "stepTwo": [
@@ -13,6 +18,13 @@
       "Surname": "Petrov",
       "City": "San Francisco, CA, United States",
       "id": 1
+    },
+    {
+      "INN": "1231231231",
+      "Name": "Lkdsjf",
+      "Surname": "Skdfj",
+      "City": "Kaifeng, SC, China",
+      "id": 2
     }
   ],
   "stepThree": [

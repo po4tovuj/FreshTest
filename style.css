@@ -11,6 +11,14 @@
      background: white right center no-repeat;
  }
 
+ .container {
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     text-align: center;
+ }
+
  label {
      display: flex;
      flex-wrap: wrap;
@@ -30,13 +38,45 @@
  .first-row {
      border-bottom: 2px solid #C0C0C0;
  }
+
  td {
      min-width: 100px;
      padding-top: 5px;
  }
-#confirm {
-    visibility: hidden;
-}
+
  .form-fields {
-     max-width: 400px;
+     max-width: 300px;
+ }
+
+ .wrapper {
+     position: relative;
+     width: 600px;
+     border: 1px solid #f00;
+ }
+
+ .start {
+     position: absolute;
+     left: 0;
+ }
+
+ .finish {
+     position: absolute;
+     right: 0%;
+ }
+
+ .container__wrapper {
+     margin-bottom: 20px;
+ }
+
+ .status {
+     min-height: 40px;
+     width: 0;
+     background-color: #ff0;
+     transition: 1.5s;
+     text-align: center;
+ }
+
+ .status__text {
+     max-width: 50%;
+     line-height: 40px;
  }
