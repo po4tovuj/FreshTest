@@ -18,6 +18,7 @@ fetch(stepThreeUrl, add)
             console.error("Error: ", err);
         });
 */
+//render page on window.onload
 function pageRender() {
     let mainRender = `<form action="#" method="post" class="form-fields" autocomplete="on">
             <label>Enter Summ
@@ -68,7 +69,7 @@ let currentStep = '';
     let surname = select('#surname');
     let inn = select('#inn');
 
-//check valid summ
+//Progress-bar 
 function statusBar () {
     let status = select('.status');
     function textStatus (text) {
@@ -107,7 +108,8 @@ function statusBar () {
             return;
     }
 }
-
+//end Progress-bar
+//check valid Summ
     function checkSumm() {
         if (summ.value === '' || summ.value > 10000 || summ.value <= 0) {
             if (clientInfo.hasOwnProperty('summ')) {
@@ -197,7 +199,7 @@ function statusBar () {
     let delAttr = (name) => {
         name.forEach(elem => {
             elem.removeAttribute('disabled');
-        })
+        });
     };
 
 //check correct INN and check age>=21 to continuation
@@ -325,7 +327,7 @@ function statusBar () {
 })();
 
 //by clicking will be open list with entered data
-
+// below will be opened list of entered information and then confirm it
 let btnNext = select('#next');
 let change = false;
 btnNext.addEventListener('click', function () {
@@ -379,7 +381,7 @@ window.addEventListener('keydown', function () {
     }
     event.preventDefault();
 }, true);
-
+//add information to json stepThree
 function writeStepThree() {
     let add = {};
     let stepThreeUrl = `${url}stepThree`;
