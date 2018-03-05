@@ -251,7 +251,8 @@ let name = select("#name");
     }
     // check valid name
     function nameCheck() {
-        let namePattern = /^[A-Z a-z]{1}([^а-яёєіїґ’"`]i?)[a-z]+((\s[A-Z]{1}([^а-яёєіїґ’"`]i?)[a-z]+)+)?$|^[А-ЯЁ а-яё]{1}([^a-zєіїґ’"`]i?)[а-яё]+((\s[А-ЯЁ]{1}([^a-zєіїґ’"`]i?)[а-яё]+)+)?$|^[А-ЯЄІЇҐ а-яєіїґ]{1}([^a-zыэъ]i?)[а-яєіїґ’"`]+((\s[А-ЯЄІЇҐ’"`]{1}([^a-zыэъ]i?)[а-яєіїґ’"`]+)+)?$/;
+        let namePattern;
+        namePattern = /^[A-Z a-z]{1}([^а-яёєіїґ’"`]i?)[a-z]+((\s[A-Z]{1}([^а-яёєіїґ’"`]i?)[a-z]+)+)?$|^[А-ЯЁ а-яё]{1}([^a-zєіїґ’"`]i?)[а-яё]+((\s[А-ЯЁ]{1}([^a-zєіїґ’"`]i?)[а-яё]+)+)?$|^[А-ЯЄІЇҐ а-яєіїґ]{1}([^a-zыэъ]i?)[а-яєіїґ’"`]+((\s[А-ЯЄІЇҐ’"`]{1}([^a-zыэъ]i?)[а-яєіїґ’"`]+)+)?$/;
         console.log(name.value);
         let checkName = namePattern.test(name.value);
         if (!checkName) {
@@ -269,7 +270,8 @@ let name = select("#name");
     }
     //check valid Surname
     function surnameCheck() {
-        let surnamePattern = /^[A-Z a-z]{1}([^а-яёєіїґ’"`]i?)[a-z]+((-[A-Z]{1}([^а-яёєіїґ’"`]i?)[a-z]+)+)?$|^[А-ЯЁ а-яё]{1}([^a-zєіїґ’"`]i?)[а-яё]+((-[А-ЯЁ]{1}([^a-zєіїґ’"`]i?)[а-яё]+)+)?$|^[А-ЯЄІЇҐ’"` а-яєіїґ]{1}([^a-zыэъ]i?)[а-яєіїґ’"`]+((-[А-ЯЄІЇҐ’"`]{1}([^a-zыэъ]i?)[а-яєіїґ’"`]+)+)?$/;
+        let surnamePattern;
+        surnamePattern = /^[A-Z a-z]{1}([^а-яёєіїґ’"`]i?)[a-z]+((-[A-Z]{1}([^а-яёєіїґ’"`]i?)[a-z]+)+)?$|^[А-ЯЁ а-яё]{1}([^a-zєіїґ’"`]i?)[а-яё]+((-[А-ЯЁ]{1}([^a-zєіїґ’"`]i?)[а-яё]+)+)?$|^[А-ЯЄІЇҐ’"` а-яєіїґ]{1}([^a-zыэъ]i?)[а-яєіїґ’"`]+((-[А-ЯЄІЇҐ’"`]{1}([^a-zыэъ]i?)[а-яєіїґ’"`]+)+)?$/;
         let checkSurname = surnamePattern.test(surname.value);
         if (!checkSurname) {
             if (clientInfo.hasOwnProperty("surname")) {
@@ -356,6 +358,8 @@ btnNext.addEventListener("click", function () {
         change = false; /* if client saw list and all inputs filled it write stepThree in Json*/
         btnNext.value = "Get List";
         console.log(change);
+        //add information to json stepThree
+
         let add = {};
         let stepThreeUrl = `${url}stepThree`;
         add.headers = {
@@ -403,10 +407,7 @@ window.addEventListener("keydown", function () {
     }
     event.preventDefault();
 }, true);
-//add information to json stepThree
-function writeStepThree() {
-    
-}
+
 
 
 // Get autocomplete city from open-base
