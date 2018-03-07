@@ -51,7 +51,7 @@ function pageRender() {
 }
 
 window.onload = pageRender();
-
+// function for getting by querySellector
 function select(name) {
     return document.querySelector(name);
 }
@@ -118,7 +118,7 @@ let name = select("#name");
             }
             summ.value = "";
             summ.focus();
-            term.setAttribute("disabled", true);
+            term.setAttribute("disabled", true);/*close inputs for stepTwo*/
             errorMessage.textContent = "Введите сумму. Сумма должна быть больше 0 и меньше 10000";
         } else if (parseInt(summ.value) != summ.value) {
             if (clientInfo.hasOwnProperty("summ")) {
@@ -126,10 +126,10 @@ let name = select("#name");
             }
             summ.value = "";
             summ.focus();
-            term.setAttribute("disabled", true);
+            term.setAttribute("disabled", true); /*close inputs for stepTwo*/
             errorMessage.textContent = "Вы не корректно заполнили поле Summ. Cумма должна быть целым числом";
         } else {
-            term.removeAttribute("disabled");
+            term.removeAttribute("disabled"); /*open inputs for stepTwo*/
             errorMessage.textContent = "";
             clientInfo.summ = summ.value;
             statusBar();
@@ -159,7 +159,8 @@ let name = select("#name");
         let inputs = document.querySelectorAll("input.step-2");
         if (Object.keys(clientInfo).length >= 2) {
             delAttr(inputs);
-            inn.focus();
+            inn.focus(); 
+            /* Post request stepOne */
             let add = {};
             let stepOneUrl = `${url}stepOne`;
             add.headers = {
@@ -204,7 +205,7 @@ let name = select("#name");
 
     //check correct INN and check age>=21 to continuation
     function checkInn() {
-        let dateOfBirth = new Date(0, 0, parseFloat(inn.value.slice(0, 5)));
+        let dateOfBirth = new Date(0, 0, parseFloat(inn.value.slice(0, 5)));/*get first 5 symbols from INN to check age */
         let yearOfBirth = dateOfBirth.getFullYear();
         let currentDate = new Date();
         let currentYear = currentDate.getFullYear();
@@ -217,7 +218,7 @@ let name = select("#name");
             inn.value = "";
             inn.focus();
             errorMessage.textContent = "INN must contain of 10 numbers. Please enter your real INN.";
-        } else if (age < 21) {
+        } else if (age < 21) { /*check age. if age > 21 then disable stepTwo*/
             if (clientInfo.hasOwnProperty("inn")) {
                 delete clientInfo.inn;
             } /* if age less then 21 remove data from json */
@@ -261,7 +262,8 @@ let name = select("#name");
             }
             name.value = "";
             errorMessage.textContent = "Enter your real Name";
-        } else {
+        } else { /* if user write name whith small first letter
+            it will change it to UpperCase example write "petya", will change to "Petya"  */
             name.value = name.value[0].toUpperCase() + name.value.substr(1);
             errorMessage.textContent = "";
             clientInfo.name = name.value;

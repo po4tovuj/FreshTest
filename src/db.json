@@ -1,0 +1,39 @@
+{
+  "stepOne": [
+    {
+      "Summ": "1235",
+      "Term": "12",
+      "id": 1
+    },
+    {
+      "Summ": "1500",
+      "Term": "12",
+      "id": 2
+    },
+    {
+      "Summ": "8888",
+      "Term": "12",
+      "id": 3
+    }
+  ],
+  "stepTwo": [
+    {
+      "INN": "3139314891",
+      "Name": "Petya",
+      "Surname": "Ivanov",
+      "City": "Kiev, KC, Ukraine",
+      "id": 1
+    }
+  ],
+  "stepThree": [
+    {
+      "Summ": "8888",
+      "Term": "12",
+      "INN": "3139314891",
+      "Name": "Petya",
+      "Surname": "Ivanov",
+      "City": "Kiev, KC, Ukraine",
+      "id": 1
+    }
+  ]
+}
