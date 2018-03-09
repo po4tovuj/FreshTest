@@ -33,7 +33,7 @@ function pageRender() {
                 <input type="number" class="step-2" id="inn" disabled required>
             </label>
             <label> Enter your Name
-                <input type="text" class="step-2" id="name" disabled required>
+                <input type="text" class="step-2" id="myName" disabled required>
             </label>
             <label> Enter your Surname
                 <input type="text" class="step-2" id="surname" disabled required>
@@ -62,7 +62,6 @@ let url = "http://localhost:3000/";
 let city = select(".get-city");
 let currentId = "";
 let currentStep = "";
-let name = select("#name");
 
 
 (function () {
@@ -70,6 +69,8 @@ let name = select("#name");
     let summ = select("#summ");
     let surname = select("#surname");
     let inn = select("#inn");
+    let myName = select('#myName'); //start validate by loosing focus
+
 
     //Progress-bar
     function statusBar() {
@@ -250,20 +251,21 @@ let name = select("#name");
         }
     }
     // check valid name
+    
     function nameCheck() {
+        
         let namePattern = /^[A-Z a-z]{1}([^а-яёєіїґ’"`]i?)[a-z]+((\s[A-Z]{1}([^а-яёєіїґ’"`]i?)[a-z]+)+)?$|^[А-ЯЁ а-яё]{1}([^a-zєіїґ’"`]i?)[а-яё]+((\s[А-ЯЁ]{1}([^a-zєіїґ’"`]i?)[а-яё]+)+)?$|^[А-ЯЄІЇҐ а-яєіїґ]{1}([^a-zыэъ]i?)[а-яєіїґ’"`]+((\s[А-ЯЄІЇҐ’"`]{1}([^a-zыэъ]i?)[а-яєіїґ’"`]+)+)?$/;
-        console.log(name.value);
-        let checkName = namePattern.test(name.value);
+        let checkName = namePattern.test(myName.value);
         if (!checkName) {
             if (clientInfo.hasOwnProperty("name")) {
                 delete clientInfo.name;
             }
-            name.value = "";
+            myName.value = "";
             errorMessage.textContent = "Enter your real Name";
         } else {
-            name.value = name.value[0].toUpperCase() + name.value.substr(1);
+            myName.value = myName.value[0].toUpperCase() + myName.value.substr(1);
             errorMessage.textContent = "";
-            clientInfo.name = name.value;
+            clientInfo.name = myName.value;
             statusBar();
         }
     }
@@ -300,7 +302,7 @@ let name = select("#name");
             add.method = "POST";
             add.body = JSON.stringify({
                 "INN": inn.value,
-                "Name": name.value,
+                "Name": myName.value,
                 "Surname": surname.value,
                 "City": city.value,
             });
@@ -317,8 +319,7 @@ let name = select("#name");
             errorMessage.textContent = "";
         }
     }
-    //start validate by loosing focus
-    name.addEventListener("blur", nameCheck);
+    myName.addEventListener("blur", nameCheck);
     inn.addEventListener("blur", checkInn);
     term.addEventListener("blur", checkTermValid);
     summ.addEventListener("blur", checkSumm);
@@ -366,7 +367,7 @@ btnNext.addEventListener("click", function () {
             "Summ": summ.value,
             "Term": term.value,
             "INN": inn.value,
-            "Name": name.value,
+            "Name": myName.value,
             "Surname": surname.value,
             "City": city.value,
         });

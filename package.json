@@ -1,0 +1,34 @@
+{
+  "name": "fresh",
+  "version": "1.1.0",
+  "description": "fresh",
+  "main": "index.js",
+  "scripts": {
+    "start": "gulp"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "babel-preset-env": "^1.5.2",
+    "browser-sync": "^2.18.12",
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^4.0.0",
+    "gulp-babel": "^6.1.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-cssnano": "^2.1.2",
+    "gulp-imagemin": "^3.3.0",
+    "gulp-rigger": "^0.5.8",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-uglify": "^3.0.0",
+    "imagemin-pngquant": "^5.0.1"
+  },
+  "dependencies": {
+    "axios": "^0.17.1",
+    "json-server": "^0.12.1",
+    "moment": "^2.20.1",
+    "normalize.css": "^8.0.0",
+    "npm": "^5.7.1"
+  },
+  "author": ""
+}
