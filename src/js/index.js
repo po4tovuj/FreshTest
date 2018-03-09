@@ -51,7 +51,7 @@ function pageRender() {
 }
 
 window.onload = pageRender();
-
+// function for getting by querySellector
 function select(name) {
     return document.querySelector(name);
 }
@@ -119,7 +119,7 @@ let currentStep = "";
             }
             summ.value = "";
             summ.focus();
-            term.setAttribute("disabled", true);
+            term.setAttribute("disabled", true);/*close inputs for stepTwo*/
             errorMessage.textContent = "Введите сумму. Сумма должна быть больше 0 и меньше 10000";
         } else if (parseInt(summ.value) != summ.value) {
             if (clientInfo.hasOwnProperty("summ")) {
@@ -127,10 +127,10 @@ let currentStep = "";
             }
             summ.value = "";
             summ.focus();
-            term.setAttribute("disabled", true);
+            term.setAttribute("disabled", true); /*close inputs for stepTwo*/
             errorMessage.textContent = "Вы не корректно заполнили поле Summ. Cумма должна быть целым числом";
         } else {
-            term.removeAttribute("disabled");
+            term.removeAttribute("disabled"); /*open inputs for stepTwo*/
             errorMessage.textContent = "";
             clientInfo.summ = summ.value;
             statusBar();
@@ -160,7 +160,8 @@ let currentStep = "";
         let inputs = document.querySelectorAll("input.step-2");
         if (Object.keys(clientInfo).length >= 2) {
             delAttr(inputs);
-            inn.focus();
+            inn.focus(); 
+            /* Post request stepOne */
             let add = {};
             let stepOneUrl = `${url}stepOne`;
             add.headers = {
@@ -205,7 +206,7 @@ let currentStep = "";
 
     //check correct INN and check age>=21 to continuation
     function checkInn() {
-        let dateOfBirth = new Date(0, 0, parseFloat(inn.value.slice(0, 5)));
+        let dateOfBirth = new Date(0, 0, parseFloat(inn.value.slice(0, 5)));/*get first 5 symbols from INN to check age */
         let yearOfBirth = dateOfBirth.getFullYear();
         let currentDate = new Date();
         let currentYear = currentDate.getFullYear();
@@ -218,7 +219,7 @@ let currentStep = "";
             inn.value = "";
             inn.focus();
             errorMessage.textContent = "INN must contain of 10 numbers. Please enter your real INN.";
-        } else if (age < 21) {
+        } else if (age < 21) { /*check age. if age > 21 then disable stepTwo*/
             if (clientInfo.hasOwnProperty("inn")) {
                 delete clientInfo.inn;
             } /* if age less then 21 remove data from json */
@@ -262,7 +263,8 @@ let currentStep = "";
             }
             myName.value = "";
             errorMessage.textContent = "Enter your real Name";
-        } else {
+        } else { /* if user write name whith small first letter
+            it will change it to UpperCase example write "petya", will change to "Petya"  */
             myName.value = myName.value[0].toUpperCase() + myName.value.substr(1);
             errorMessage.textContent = "";
             clientInfo.name = myName.value;
@@ -271,7 +273,8 @@ let currentStep = "";
     }
     //check valid Surname
     function surnameCheck() {
-        let surnamePattern = /^[A-Z a-z]{1}([^а-яёєіїґ’"`]i?)[a-z]+((-[A-Z]{1}([^а-яёєіїґ’"`]i?)[a-z]+)+)?$|^[А-ЯЁ а-яё]{1}([^a-zєіїґ’"`]i?)[а-яё]+((-[А-ЯЁ]{1}([^a-zєіїґ’"`]i?)[а-яё]+)+)?$|^[А-ЯЄІЇҐ’"` а-яєіїґ]{1}([^a-zыэъ]i?)[а-яєіїґ’"`]+((-[А-ЯЄІЇҐ’"`]{1}([^a-zыэъ]i?)[а-яєіїґ’"`]+)+)?$/;
+        let surnamePattern;
+        surnamePattern = /^[A-Z a-z]{1}([^а-яёєіїґ’"`]i?)[a-z]+((-[A-Z]{1}([^а-яёєіїґ’"`]i?)[a-z]+)+)?$|^[А-ЯЁ а-яё]{1}([^a-zєіїґ’"`]i?)[а-яё]+((-[А-ЯЁ]{1}([^a-zєіїґ’"`]i?)[а-яё]+)+)?$|^[А-ЯЄІЇҐ’"` а-яєіїґ]{1}([^a-zыэъ]i?)[а-яєіїґ’"`]+((-[А-ЯЄІЇҐ’"`]{1}([^a-zыэъ]i?)[а-яєіїґ’"`]+)+)?$/;
         let checkSurname = surnamePattern.test(surname.value);
         if (!checkSurname) {
             if (clientInfo.hasOwnProperty("surname")) {
@@ -357,6 +360,8 @@ btnNext.addEventListener("click", function () {
         change = false; /* if client saw list and all inputs filled it write stepThree in Json*/
         btnNext.value = "Get List";
         console.log(change);
+        //add information to json stepThree
+
         let add = {};
         let stepThreeUrl = `${url}stepThree`;
         add.headers = {
@@ -404,10 +409,7 @@ window.addEventListener("keydown", function () {
     }
     event.preventDefault();
 }, true);
-//add information to json stepThree
-function writeStepThree() {
-    
-}
+
 
 
 // Get autocomplete city from open-base
