@@ -20,40 +20,11 @@ fetch(stepThreeUrl, add)
 render page on window.onload
 */
 
-function pageRender() {
-    let mainRender = `<form action="#" method="post" class="form-fields" autocomplete="on">
-            <label>Enter Summ
-                <input type="number" id="summ" required>
-            </label>
-            <label>Enter Term
-                <input type="number" id="term" required>
-            </label>
 
-            <label> Enter your INN
-                <input type="number" class="step-2" id="inn" disabled required>
-            </label>
-            <label> Enter your Name
-                <input type="text" class="step-2" id="myName" disabled required>
-            </label>
-            <label> Enter your Surname
-                <input type="text" class="step-2" id="surname" disabled required>
-            </label>
 
-            <label> Enter your City
-                <input type="text" value="" class="get-city step-2" id="f_elem_city" disabled required>
-            </label>
-
-            <p class="errorMessage"></p>
-            <input type="submit" id="next" value="Get List">
-        </form>`;
-    let container = select(".container");
-    container.insertAdjacentHTML("beforeEnd", mainRender);
-}
-
-window.onload = pageRender();
 // function for getting by querySellector
-function select(name) {
-    return document.querySelector(name);
+function select(b) {
+    return document.querySelector(b);
 }
 
 let errorMessage = select(".errorMessage");
@@ -68,8 +39,13 @@ let currentStep = "";
     let term = select("#term");
     let summ = select("#summ");
     let surname = select("#surname");
-    let inn = select("#inn");
+    let inn = select(".inn");
     let myName = select('#myName'); //start validate by loosing focus
+    let stepTwo = select('#tab2');
+    let stepThree = select('#tab3');
+    let btnNext = select('.next');
+    let errMessageStep2 = document.querySelector('#tab-content2 p');
+    let inputs = document.querySelectorAll('.step-3 input'); /*get inputs from step3 */
 
 
     //Progress-bar
@@ -118,19 +94,18 @@ let currentStep = "";
                 delete clientInfo.summ;
             }
             summ.value = "";
-            summ.focus();
-            term.setAttribute("disabled", true);/*close inputs for stepTwo*/
+
+            stepTwo.setAttribute("disabled", true);
+            stepThree.setAttribute("disabled", true); /*close inputs for stepTwo*/
             errorMessage.textContent = "Введите сумму. Сумма должна быть больше 0 и меньше 10000";
         } else if (parseInt(summ.value) != summ.value) {
             if (clientInfo.hasOwnProperty("summ")) {
                 delete clientInfo.summ;
             }
             summ.value = "";
-            summ.focus();
-            term.setAttribute("disabled", true); /*close inputs for stepTwo*/
             errorMessage.textContent = "Вы не корректно заполнили поле Summ. Cумма должна быть целым числом";
         } else {
-            term.removeAttribute("disabled"); /*open inputs for stepTwo*/
+            /*open inputs for stepTwo*/
             errorMessage.textContent = "";
             clientInfo.summ = summ.value;
             statusBar();
@@ -157,116 +132,75 @@ let currentStep = "";
     }
     //check for correct fills of first two inputs, and write in json information from them into StepOne
     function checkStepOne() {
-        let inputs = document.querySelectorAll("input.step-2");
         if (Object.keys(clientInfo).length >= 2) {
-            delAttr(inputs);
-            inn.focus(); 
-            /* Post request stepOne */
-            let add = {};
-            let stepOneUrl = `${url}stepOne`;
-            add.headers = {
-                "Content-Type": "application/json"
-            };
-            add.method = "POST";
-            add.body = JSON.stringify({
-                "Summ": summ.value,
-                "Term": term.value
-            });
-            fetch(stepOneUrl, add)
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    }
-                    throw new Error("error while fetching, " + response.statusText);
-                })
-                .then(data => {
-                    currentId = data.id;
-                    currentStep = "stepOne";
-                })
-                .catch(err => {
-                    console.error("Error: ", err);
-                });
+            stepTwo.removeAttribute('disabled');
+            stepTwo.setAttribute('checked', true);
+            stepTwo.focus();
+            inn.focus();
         } else {
-            setAttr(inputs);
+            stepTwo.setAttribute("disabled", true);
+            stepThree.setAttribute("disabled", true);
         }
     }
-    //End checking
 
-    let setAttr = (name) => {
-        name.forEach(elem => {
-            elem.setAttribute("disabled", true);
-        });
-    };
+    // btnNext.addEventListener('click', checkStepOne);
+    //End checking stepOne
 
-    let delAttr = (name) => {
-        name.forEach(elem => {
-            elem.removeAttribute("disabled");
-        });
-    };
-
+    //step 2 start
     //check correct INN and check age>=21 to continuation
     function checkInn() {
-        let dateOfBirth = new Date(0, 0, parseFloat(inn.value.slice(0, 5)));/*get first 5 symbols from INN to check age */
+        let dateOfBirth = new Date(0, 0, parseFloat(inn.value.slice(0, 5))); /*get first 5 symbols from INN to check age */
         let yearOfBirth = dateOfBirth.getFullYear();
         let currentDate = new Date();
         let currentYear = currentDate.getFullYear();
         let age = currentYear - yearOfBirth;
-        let stepTwoErr = document.querySelectorAll("input#name, input#surname, input.get-city");
+        let errMessageStep2 = document.querySelector('#tab-content2 p');
+        let stepTwoErr = document.querySelectorAll("input#myName, input#surname, input.get-city");
         if (inn.value.length > 10 || inn.value.length < 10) {
             if (clientInfo.hasOwnProperty("inn")) {
                 delete clientInfo.inn;
             }
             inn.value = "";
-            inn.focus();
-            errorMessage.textContent = "INN must contain of 10 numbers. Please enter your real INN.";
+            // inn.focus();
+            errMessageStep2.textContent = "INN must contain of 10 numbers. Please enter your real INN.";
         } else if (age < 21) { /*check age. if age > 21 then disable stepTwo*/
             if (clientInfo.hasOwnProperty("inn")) {
                 delete clientInfo.inn;
-            } /* if age less then 21 remove data from json */
-            let removeUrl = `${url}${currentStep}/${currentId}`;
-            let removed = {};
-            removed.headers = {
-                "Content-Type": "application/json"
-            };
-            removed.method = "DELETE";
-            removed.body = JSON.stringify({});
-            fetch(removeUrl, removed)
-                .then(response => {
-                    if (response.ok) {
-                        response.json();
-                    } else {
-                        throw new Error("Error fetching data. Response status: " + response.status + " : " + response.statusText);
-                    }
-                })
-                .catch(err => {
-                    console.error("Error: ", err);
-                });
+            }
 
-            errorMessage.textContent = "Sorry, but your age is less then 21. You couldn\"t take a credit";
-            setAttr(stepTwoErr);
+
+            errMessageStep2.textContent = "Sorry, but your age is less then 21. You couldn\"t take a credit";
+            stepTwoErr.forEach(elem => {
+                elem.setAttribute('disabled', true);
+            })
         } else {
+            stepTwoErr.forEach(elem => {
+                elem.removeAttribute("disabled");
+            });
+            errMessageStep2.textContent = "";
             clientInfo.inn = inn.value;
             statusBar();
             console.log(age);
-            delAttr(stepTwoErr);
+            // delAttr(stepTwoErr);
         }
     }
     // check valid name
-    
+
     function nameCheck() {
-        
+
         let namePattern = /^[A-Z a-z]{1}([^а-яёєіїґ’"`]i?)[a-z]+((\s[A-Z]{1}([^а-яёєіїґ’"`]i?)[a-z]+)+)?$|^[А-ЯЁ а-яё]{1}([^a-zєіїґ’"`]i?)[а-яё]+((\s[А-ЯЁ]{1}([^a-zєіїґ’"`]i?)[а-яё]+)+)?$|^[А-ЯЄІЇҐ а-яєіїґ]{1}([^a-zыэъ]i?)[а-яєіїґ’"`]+((\s[А-ЯЄІЇҐ’"`]{1}([^a-zыэъ]i?)[а-яєіїґ’"`]+)+)?$/;
         let checkName = namePattern.test(myName.value);
         if (!checkName) {
             if (clientInfo.hasOwnProperty("name")) {
-                delete clientInfo.name;
+                delete clientInfo.Name;
             }
             myName.value = "";
-            errorMessage.textContent = "Enter your real Name";
-        } else { /* if user write name whith small first letter
-            it will change it to UpperCase example write "petya", will change to "Petya"  */
+            errMessageStep2.textContent = "Enter your real Name";
+        } else {
+            /* if user write name whith small first letter
+                       it will change it to UpperCase example write "petya", will change to "Petya"  */
             myName.value = myName.value[0].toUpperCase() + myName.value.substr(1);
-            errorMessage.textContent = "";
+            errMessageStep2.textContent = "";
             clientInfo.name = myName.value;
             statusBar();
         }
@@ -281,9 +215,9 @@ let currentStep = "";
                 delete clientInfo.surname;
             }
             surname.value = "";
-            errorMessage.textContent = "Enter your real Surname";
+            errMessageStep2.textContent = "Enter your real Surname";
         } else {
-            errorMessage.textContent = "";
+            errMessageStep2.textContent = "";
             surname.value = surname.value[0].toUpperCase() + surname.value.substr(1);
             clientInfo.surname = surname.value;
             statusBar();
@@ -292,34 +226,21 @@ let currentStep = "";
     //check city and write data in Json in StepTwo
     function checkCity() {
         if (city.value === "") {
-            city.focus();
-            errorMessage.textContent = "Please enter your city";
+            errMessageStep2.textContent = "Please enter your city";
         } else {
             clientInfo.city = city.value;
             statusBar();
-            let add = {};
-            let stepTwoUrl = `${url}stepTwo`;
-            add.headers = {
-                "Content-Type": "application/json"
-            };
-            add.method = "POST";
-            add.body = JSON.stringify({
-                "INN": inn.value,
-                "Name": myName.value,
-                "Surname": surname.value,
-                "City": city.value,
-            });
-            fetch(stepTwoUrl, add)
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    }
-                    throw new Error("error while fetching, " + response.statusText);
-                })
-                .catch(err => {
-                    console.error("Error: ", err);
-                });
-            errorMessage.textContent = "";
+            errMessageStep2.textContent = "";
+        }
+    }
+
+    function checkStepTwo() {
+        if (Object.keys(clientInfo).length === 6) {
+            stepThree.removeAttribute('disabled');
+            stepThree.setAttribute('checked', true);
+            stepThree.focus();
+        } else {
+            stepThree.setAttribute("disabled", true);
         }
     }
     myName.addEventListener("blur", nameCheck);
@@ -328,71 +249,132 @@ let currentStep = "";
     summ.addEventListener("blur", checkSumm);
     surname.addEventListener("blur", surnameCheck);
     city.addEventListener("blur", checkCity);
+    let btnList = document.querySelector('.get-list');
+
+    btnList.addEventListener("click", function () {
+        event.preventDefault();
+        checkStepTwo();
+
+        if (Object.keys(clientInfo).length === 6) {
+            stepThree.removeAttribute('disabled');
+            stepThree.setAttribute('checked', true);
+            stepThree.focus();
+            let renderKey = "";
+            let renderVal = "";
+            for (let key in clientInfo) {
+                renderKey += `<th>${key}</th>`
+                renderVal += `<td>${clientInfo[key]}</td>`
+                console.log(`${key}: ${clientInfo[key]}`);
+            }
+
+            let renderList = `<table class="list">
+            <caption> Please confirm your infirmation</caption>
+            <tr class="first-row"> ${renderKey}</tr>
+               <tr> ${renderVal}</tr>
+            </table>`;
+            let container = select("#tab-content3 form");
+            container.insertAdjacentHTML("afterBegin", renderList);
+            
+        } else {
+            return;
+        }
+    });
+    let btnConfirm = select('#confirm');
+    btnConfirm.addEventListener('click', function(){
+        event.preventDefault();
+        addStepOne();
+        addStepTwo();
+        addStepThree();
+    })
 })();
+
+
+function addStepOne() {
+    let add = {};
+    let stepOneUrl = `${url}stepOne`;
+    add.headers = {
+        "Content-Type": "application/json"
+    };
+    add.method = "POST";
+    add.body = JSON.stringify({
+        "Summ": clientInfo.summ,
+        "Term": clientInfo.term
+    });
+    fetch(stepOneUrl, add)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error("error while fetching, " + response.statusText);
+        })
+        .then(data => {
+            currentId = data.id;
+            currentStep = "stepOne";
+        })
+        .catch(err => {
+            console.error("Error: ", err);
+        });
+}
+
+function addStepTwo() {
+    let add = {};
+    let stepTwoUrl = `${url}stepTwo`;
+    add.headers = {
+        "Content-Type": "application/json"
+    };
+    add.method = "POST";
+    add.body = JSON.stringify({
+        "INN": clientInfo.inn,
+        "Name": clientInfo.name,
+        "Surname": clientInfo.surname,
+        "City": clientInfo.city
+    });
+    fetch(stepTwoUrl, add)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error("error while fetching, " + response.statusText);
+        })
+        .catch(err => {
+            console.error("Error: ", err);
+        });
+}
+
+function addStepThree() {
+    let add = {};
+    let stepThreeUrl = `${url}stepThree`;
+    add.headers = {
+        "Content-Type": "application/json"
+    };
+    add.method = "POST";
+    add.body = JSON.stringify({
+        "Summ": clientInfo.summ,
+        "Term": clientInfo.term,
+        "INN": clientInfo.inn,
+        "Name": clientInfo.name,
+        "Surname": clientInfo.surname,
+        "City": clientInfo.city
+    });
+    fetch(stepThreeUrl, add)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error("error while fetching, " + response.statusText);
+        })
+        .catch(err => {
+            console.error("Error: ", err);
+        });
+}
 
 //by clicking will be open list with entered data
 // below will be opened list of entered information and then confirm it
-let btnNext = select("#next");
-let change = false;
-btnNext.addEventListener("click", function () {
-    event.preventDefault();
+// let btnNext = select(".next");
+// let change = false;
 
-    if (Object.keys(clientInfo).length == 6 && !change) {
-        change = true;
-        btnNext.value = "Confirm";
-        console.log(change);
-        let renderKey = "";
-        let renderVal = "";
-        for (let key in clientInfo) {
-            renderKey += `<th>${key}</th>`
-            renderVal += `<td>${clientInfo[key]}</td>`
-            console.log(`${key}: ${clientInfo[key]}`);
-        }
 
-        let renderList = `<table class="list">
-        <caption> Please confirm your infirmation</caption>
-        <tr class="first-row"> ${renderKey}</tr>
-           <tr> ${renderVal}</tr>
-        </table>`;
-        let container = select(".container");
-        container.insertAdjacentHTML("beforeEnd", renderList);
-    } else if (Object.keys(clientInfo).length == 6 && change) {
-        change = false; /* if client saw list and all inputs filled it write stepThree in Json*/
-        btnNext.value = "Get List";
-        console.log(change);
-        //add information to json stepThree
-
-        let add = {};
-        let stepThreeUrl = `${url}stepThree`;
-        add.headers = {
-            "Content-Type": "application/json"
-        };
-        add.method = "POST";
-        add.body = JSON.stringify({
-            "Summ": summ.value,
-            "Term": term.value,
-            "INN": inn.value,
-            "Name": myName.value,
-            "Surname": surname.value,
-            "City": city.value,
-        });
-        fetch(stepThreeUrl, add)
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw new Error("error while fetching, " + response.statusText);
-            })
-            .catch(err => {
-                console.error("Error: ", err);
-            });
-    } else {
-        return;
-    }
-});
-
-// here will be chaged functional ArrowLeft and ArrowRight
-
+// here will be chaged functional ArrowLeft and ArrowRigh
 window.addEventListener("keydown", function () {
     if (event.defaultPrevented) {
         return;
@@ -410,7 +392,28 @@ window.addEventListener("keydown", function () {
     event.preventDefault();
 }, true);
 
+//get tabs
 
+$(document).ready(function () {
+
+    (function ($) {
+        $('.tab ul.tabs').addClass('active').find('> li:eq(0)').addClass('current');
+
+        $('.tab ul.tabs li a').click(function (g) {
+            var tab = $(this).closest('.tab'),
+                index = $(this).closest('li').index();
+
+            tab.find('ul.tabs > li').removeClass('current');
+            $(this).closest('li').addClass('current');
+
+            tab.find('.tab_content').find('div.tabs_item').not('div.tabs_item:eq(' + index + ')').slideUp();
+            tab.find('.tab_content').find('div.tabs_item:eq(' + index + ')').slideDown();
+
+            g.preventDefault();
+        });
+    })(jQuery);
+
+});
 
 // Get autocomplete city from open-base
 jQuery(function () {

@@ -1,5 +1,29 @@
 {
-  "stepOne": [],
-  "stepTwo": [],
-  "stepThree": []
+  "stepOne": [
+    {
+      "Summ": "1500",
+      "Term": "2",
+      "id": 1
+    }
+  ],
+  "stepTwo": [
+    {
+      "INN": "1231231231",
+      "Name": "Ivan",
+      "Surname": "Petrio",
+      "City": "Kealakekua, HI, United States",
+      "id": 1
+    }
+  ],
+  "stepThree": [
+    {
+      "Summ": "1500",
+      "Term": "2",
+      "INN": "1231231231",
+      "Name": "Ivan",
+      "Surname": "Petrio",
+      "City": "Kealakekua, HI, United States",
+      "id": 1
+    }
+  ]
 }

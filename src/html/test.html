@@ -5,4 +5,59 @@
         <span class="start">0%</span>
         <span class="finish">100%</span>
     </div>
+    <!-- step one -->
+    <ul class="tabs">
+        <li class="tab">
+            <input type="radio" name="tabs" checked="checked" id="tab1" />
+            <label for="tab1">Step One</label>
+            <div id="tab-content1" class="content">
+                <form action="#" method="post" class="form-fields" autocomplete="on">
+                    <label>Enter Summ
+                        <input type="number" id="summ" required>
+                    </label>
+                    <label>Enter Term
+                        <input type="number" id="term" required>
+                    </label>
+                    <p class="errorMessage"></p>
+                    <input type="submit" class="next" value="go next">
+                </form>
+            </div>
+        </li>
+    <!-- step two -->
+        <li class="tab">
+            <input type="radio" name="tabs" id="tab2" disabled />
+            <label for="tab2">Step Two</label>
+            <div id="tab-content2" class="content">
+                <form action="#" method="post" class="form-fields" autocomplete="on">
+                    <label> Enter your INN
+                        <input type="number" class="inn step-2" required>
+                    </label>
+                    <label> Enter your Name
+                        <input type="text" class="step-2" id="myName" required>
+                    </label>
+                    <label> Enter your Surname
+                        <input type="text" class="step-2" id="surname" required>
+                    </label>
+                    <label> Enter your City
+                        <input type="text" value="" class="get-city step-2" id="f_elem_city" required>
+                    </label>
+                    <p class="errorMessage"></p>
+                    <input type="submit" class="get-list" value="Get List">
+                </form>
+            </div>
+        </li>
+    <!-- step 3 -->
+        <li class="tab">
+            <input type="radio" name="tabs" id="tab3" disabled />
+            <label for="tab3">Step Three</label>
+            <div id="tab-content3" class="content">
+                <form action="#" method="post" class="form-fields" autocomplete="on">
+                    
+                    <input type="submit" id="confirm" value="Confirm">
+                </form>
+            </div>
+        </li>
+    
+    </ul>
+    
 </div>

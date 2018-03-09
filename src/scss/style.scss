@@ -1,87 +1,145 @@
- .ui-menu .ui-menu-item a,
- .ui-menu .ui-menu-item a.ui-state-hover,
- .ui-menu .ui-menu-item a.ui-state-active {
-     font-weight: normal;
-     margin: -1px;
-     text-align: left;
-     font-size: 14px;
- }
+.ui-menu .ui-menu-item a,
+.ui-menu .ui-menu-item a.ui-state-hover,
+.ui-menu .ui-menu-item a.ui-state-active {
+    font-weight: normal;
+    margin: -1px;
+    text-align: left;
+    font-size: 14px;
+}
 
- .ui-autocomplete-loading {
-     background: white right center no-repeat;
- }
+.ui-autocomplete-loading {
+    background: white right center no-repeat;
+}
 
- .container {
-     display: flex;
-     flex-direction: column;
-     justify-content: center;
-     align-items: center;
-     text-align: center;
- }
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
 
- label {
-     display: flex;
-     flex-wrap: wrap;
-     justify-content: flex-end;
-     margin: 5px;
-   color: #000;
-   font-size: 16px;
-    }
+label {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    margin: 5px;
+    color: #000;
+    font-size: 16px;
+}
 
- input {
-     margin-left: 10px;
- }
+input {
+    margin-left: 10px;
+}
 
- .list {
-     border-collapse: collapse;
-     text-align: center;
- }
+.list {
+    border-collapse: collapse;
+    text-align: center;
 
- .first-row {
-     border-bottom: 2px solid #C0C0C0;
- }
+}
 
- td {
-     min-width: 100px;
-     padding-top: 5px;
- }
+.first-row {
+    border-bottom: 2px solid #C0C0C0;
+}
 
- .form-fields {
-   max-width: 300px;
-   margin: 50px auto;
+td {
+    min-width: 100px;
+    padding-top: 5px;
+}
 
- }
+.form-fields {
+    max-width: 600px;
+    margin: 50px auto;
+}
 
- .wrapper {
-     position: relative;
-     width: 600px;
-     border: 1px solid #f00;
- }
+.wrapper {
+    position: relative;
+    width: 600px;
+    border: 1px solid #f00;
+}
 
- .start {
-     position: absolute;
-     left: 0;
- }
+.start {
+    position: absolute;
+    left: 0;
+}
 
- .finish {
-     position: absolute;
-     right: 0%;
- }
+.finish {
+    position: absolute;
+    right: 0%;
+}
 
- .container__wrapper {
-     margin-bottom: 20px;
- }
+.container__wrapper {
+    margin-bottom: 20px;
+}
 
- .status {
-     min-height: 40px;
-     width: 0;
-     background-color: #ff0;
-     transition: 1.5s;
-     text-align: center;
- }
+.status {
+    min-height: 40px;
+    width: 0;
+    background-color: #ff0;
+    transition: 1.5s;
+    text-align: center;
+}
 
- .status__text {
-     max-width: 50%;
-     line-height: 40px;
- }
+.status__text {
+    max-width: 50%;
+    line-height: 40px;
+}
+.errorMessage {
+    margin-top: 40px;
+    color: #f00;
+}
 
+.tabs {
+    width: 600px;
+    display: block;
+    margin: 40px auto;
+    position: relative;
+}
+
+.tabs .tab {
+    float: left;
+    display: block;
+}
+
+.tabs .tab>input[type="radio"] {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+}
+
+.tabs .tab>label {
+    display: block;
+    padding: 6px 21px;
+    font-size: 12px;
+    text-transform: uppercase;
+    cursor: pointer;
+    position: relative;
+    color: #FFF;
+    background: #4A83FD;
+}
+
+.tabs .content {
+    z-index: 0;
+    /* or display: none; */
+    overflow: hidden;
+    width: 600px;
+    padding: 25px;
+    position: absolute;
+    top: 27px;
+    left: 0;
+    opacity: 0;
+    transition: opacity 400ms ease-out;
+}
+
+.tabs>.tab>[id^="tab"]:checked+label {
+    top: 0;
+    background: #303030;
+    color: #F5F5F5;
+}
+
+.tabs>.tab>[id^="tab"]:checked~[id^="tab-content"] {
+    z-index: 1;
+    /* or display: block; */
+    opacity: 1;
+    transition: opacity 400ms ease-out;
+}
